@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardScript : MonoBehaviour {
-	public int width;
-	public int height;
 	public GameObject[][] boardArray;
 
-	// Use this for initialization
-	void Start () {
-		
+	public int getWidth() {
+		if (boardArray != null && boardArray[0] != null)
+			return boardArray[0].length;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+
+	public int getHeight() {
+		if (boardArray != null)
+			return boardArray.length;
 	}
 }
