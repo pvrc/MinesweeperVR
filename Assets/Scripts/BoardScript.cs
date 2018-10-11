@@ -27,7 +27,7 @@ public class BoardScript : MonoBehaviour {
                 continue;
             } else {
                 tempBoardArray[posX, posY] = 10;
-                IncrementNeighbours(posX, posY);
+                IncrementNeighbours(posX, posY, tempBoardArray);
             }
         }
 
@@ -54,7 +54,7 @@ public class BoardScript : MonoBehaviour {
 		
 	}
 
-    private void IncrementNeighbours(int x, int y) { //copied and edited from jarett lee's TileScript.cs
+    private void IncrementNeighbours(int x, int y, int[,] tempBoardArray) { //copied and edited from jarett lee's TileScript.cs
         int[] dx = new int[] { -1, -1, 0, 1, 1, 1, 0, -1 };
         int[] dy = new int[] { 0, -1, -1, -1, 0, 1, 1, 1 };
 
