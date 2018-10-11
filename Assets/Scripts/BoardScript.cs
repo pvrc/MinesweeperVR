@@ -8,8 +8,7 @@ public class BoardScript : MonoBehaviour {
 	public int width;
 	public int height;
     public int numBombs;
-    private int[][] tempBoardArray;
-	public GameObject[][] boardArray;
+	public GameObject[,] boardArray;
     public GameObject Bomb; //prefab
     public GameObject HintNumber; //prefab
 
@@ -18,15 +17,16 @@ public class BoardScript : MonoBehaviour {
         //TODO: ensure first tile hit is not mine - need some way to get the first position hit
 
         //creates a board using ints
+        int[,] tempBoardArray = new int[width, height];
         int posX, posY;
 		for (int i = 0; i < numBombs; i++) {
             posX = Random.Range(0, width - 1);
             posY = Random.Range(0, height - 1);
-            if (tempBoardArray[posX][posY] != 0) {
+            if (tempBoardArray[posX, posY] != 0) {
                 i--;
                 continue;
             } else {
-                tempBoardArray[posX][posY] = 10;
+                tempBoardArray[posX, posY] = 10;
                 IncrementNeighbours(posX, posY);
             }
         }
@@ -34,17 +34,16 @@ public class BoardScript : MonoBehaviour {
         //converts int board to GameObject s
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
-                if (tempBoardArray[x][y] > 10) {
-                    boardArray[x][y] = Instantiate(Bomb); 
+                if (tempBoardArray[x, y] >= 10) {
+                    boardArray[x, y] = Instantiate(Bomb); 
                     //TODO: transform these to the correct locations based off location in array
                     
-                } else if (tempBoardArray[x][y] > 0) {
-                    boardArray[x][y] = Instantiate(HintNumber);
-                    boardArray[x][y].GetComponent<HintNumberScript>().number = tempBoardArray[x][y];
-                    //FIXME
+                } else if (tempBoardArray[x, y] > 0) {
+                    boardArray[x, y] = Instantiate(HintNumber);
+                    boardArray[x, y].GetComponent<HintNumberScript>().number = tempBoardArray[x, y];
                 } else {
                     //an empty tile - does this need a GameObject? Can just use null checks
-                    boardArray[x][y] = null;
+                    boardArray[x, y] = null;
                 }
             }
         }
@@ -63,7 +62,7 @@ public class BoardScript : MonoBehaviour {
             int xx = x + dx[i];
             int yy = y + dy[i];
             if (xx >= 0 && xx < this.width && yy >= 0 && yy < this.height) {
-                tempBoardArray[xx][yy] += 1;
+                tempBoardArray[xx, yy] += 1;
             }
         }
     }
