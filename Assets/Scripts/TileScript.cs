@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour {
-	public GameObject board;
-	private GameObject[][] boardArray;
-	private BoardScript boardScript;
 	public bool mine = false;
 	public bool open = false;
 	public bool marked = false;
@@ -13,16 +10,17 @@ public class TileScript : MonoBehaviour {
 	public int xcor;
 	public int ycor;
 
-	private void Start() {
-		boardScript = board.GetComponent<BoardScript>();
-		boardArray = boardScript.boardArray;
-	}
+    private void Start()
+    {
+        
+
+    }
 
 	// Run this after the bombs are placed
 	public void SetBombCount() {
 		bombCount = 0;
 
-		List<GameObject> neighbours = GetNeighbours();
+		List<GameObject> neighbours = BoardScript.bs.GetNeighbours(this.xcor, this.ycor);
 		
 		foreach (GameObject tile in neighbours) {
 			TileScript tileScript = tile.GetComponent<TileScript>();
@@ -36,13 +34,13 @@ public class TileScript : MonoBehaviour {
 		this.open = true;
 		// TODO visual change tile
 
-		if (bombCount == 0) {
-			OpenNeighbors();
+		if (BoardScript.bs.numberBoardArray[xcor, ycor] == 0) {
+			BoardScript.bs.OpenNeighbors(xcor, ycor);
 		}
 	}
 
-	private void OpenNeighbors() {
-		List<GameObject> neighbours = GetNeighbours();
+	/*private void OpenNeighbors() {
+		List<GameObject> neighbours = BoardScript.GetNeighbours(xcor, ycor);
 
 		foreach (GameObject tile in neighbours) {
 			TileScript tileScript = tile.GetComponent<TileScript>();
@@ -50,9 +48,9 @@ public class TileScript : MonoBehaviour {
 				tileScript.Open();
 			}
 		}
-	}
+	}*/
 
-	private List<GameObject> GetNeighbours() {
+	/*private List<GameObject> GetNeighbours() {
 		int[] dx = new int[] {-1, -1, 0, 1, 1, 1, 0, -1};
 		int[] dy = new int[] {0, -1, -1, -1, 0, 1, 1, 1};
 
@@ -61,11 +59,11 @@ public class TileScript : MonoBehaviour {
 		for (int i = 0; i < 8; i++) {
 			int xx = this.xcor + dx[i];
 			int yy = this.ycor + dy[i];
-			if (xx >= 0 && xx < boardScript.width && yy >= 0 && yy < boardScript.height) {
-				neighbours.Add(boardArray[yy][xx]);
+			if (xx >= 0 && xx < BoardScript.width && yy >= 0 && yy < BoardScript.height) {
+				neighbours.Add(BoardScript.boardArray[yy,xx]);
 			}
 		}
 
 		return neighbours;
-	}
+	}*/
 }
