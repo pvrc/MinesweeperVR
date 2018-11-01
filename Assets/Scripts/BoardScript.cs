@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoardScript : MonoBehaviour {
-    public static BoardScript bs;
 	public int width, height, numBombs, dist;
 	public GameObject[,] boardArray;
     public GameObject Bomb, HintNumber; //prefabs
@@ -13,13 +12,13 @@ public class BoardScript : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        bs = this;
+        boardArray = new GameObject[width, height];
         numberBoardArray = new int[width, height];
         int posX, posY;
 		for (int i = 0; i < numBombs; i++) {
             posX = Random.Range(0, width - 1);
             posY = Random.Range(0, height - 1);
-            if (numberBoardArray[posX, posY] >= 0) {
+            if (numberBoardArray[posX, posY] >= 10) {
                 i--;
                 continue;
             } else {
@@ -31,15 +30,17 @@ public class BoardScript : MonoBehaviour {
         //converts int board to GameObject s
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
+                Vector3 pos = new Vector3(x * dist, 0, y * dist);
                 if (numberBoardArray[x, y] >= 10) {
-                    //boardArray[x, y] = Instantiate(Bomb); 
-                    Vector3 pos = new Vector3(x * dist, 0, y * dist);
+                    boardArray[x, y] = Instantiate(Bomb); 
                     GameObject.Instantiate(Bomb, pos, Quaternion.identity, transform);
-                    //TODO: transform these to the correct locations based off location in array
 
-                } else if (numberBoardArray[x, y] >= 0) {
-                    boardArray[x, y] = GameObject.Instantiate(HintNumber);
-                    boardArray[x, y].GetComponent<HintNumberScript>().number = numberBoardArray[x, y];
+                } else {
+                    boardArray[x, y] = GameObject.Instantiate(HintNumber, 
+                        pos, 
+                        Quaternion.identity, 
+                        transform);
+                    boardArray[x, y].GetComponent<TileScript>().bombCount = numberBoardArray[x, y];
                 } 
             }
         }

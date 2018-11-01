@@ -9,6 +9,7 @@ public class TileScript : MonoBehaviour {
 	public int bombCount = 0;
 	public int xcor;
 	public int ycor;
+    public BoardScript bs;
 
     private void Start()
     {
@@ -20,7 +21,7 @@ public class TileScript : MonoBehaviour {
 	public void SetBombCount() {
 		bombCount = 0;
 
-		List<GameObject> neighbours = BoardScript.bs.GetNeighbours(this.xcor, this.ycor);
+		List<GameObject> neighbours = bs.GetNeighbours(this.xcor, this.ycor);
 		
 		foreach (GameObject tile in neighbours) {
 			TileScript tileScript = tile.GetComponent<TileScript>();
@@ -34,12 +35,18 @@ public class TileScript : MonoBehaviour {
 		this.open = true;
 		// TODO visual change tile
 
-		if (BoardScript.bs.numberBoardArray[xcor, ycor] == 0) {
-			BoardScript.bs.OpenNeighbors(xcor, ycor);
+		if (bs.numberBoardArray[xcor, ycor] == 0) {
+			bs.OpenNeighbors(xcor, ycor);
 		}
 	}
 
-	/*private void OpenNeighbors() {
+    private void OnCollisionEnter(Collision collision)
+    {
+        Open();
+    }
+
+
+    /*private void OpenNeighbors() {
 		List<GameObject> neighbours = BoardScript.GetNeighbours(xcor, ycor);
 
 		foreach (GameObject tile in neighbours) {
@@ -50,7 +57,7 @@ public class TileScript : MonoBehaviour {
 		}
 	}*/
 
-	/*private List<GameObject> GetNeighbours() {
+    /*private List<GameObject> GetNeighbours() {
 		int[] dx = new int[] {-1, -1, 0, 1, 1, 1, 0, -1};
 		int[] dy = new int[] {0, -1, -1, -1, 0, 1, 1, 1};
 
