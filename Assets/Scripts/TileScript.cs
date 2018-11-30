@@ -10,11 +10,17 @@ public class TileScript : MonoBehaviour {
 	public int xcor;
 	public int ycor;
     public BoardScript bs;
+    private string[] textures;
+    public Renderer mesh;
+    
 
     private void Start()
     {
-        
-
+        textures = new string[10];
+        for (int i=0; i<10; i++)
+        {
+            textures[i] = i.ToString();
+        }
     }
 
 	// Run this after the bombs are placed
@@ -32,12 +38,20 @@ public class TileScript : MonoBehaviour {
 	}
 
 	public void Open() {
-		this.open = true;
-		// TODO visual change tile
-
-		if (bs.numberBoardArray[xcor, ycor] == 0) {
-			bs.OpenNeighbors(xcor, ycor);
-		}
+        if (open) return;
+        this.open = true;
+        
+        int num = bs.numberBoardArray[xcor, ycor];
+        switch (num)
+        {
+            case 0:
+                bs.OpenNeighbors(xcor, ycor);
+                mesh.materials[0] = (Material)Resources.Load("10");
+                break;
+            default:
+                mesh.materials[0] = (Material)Resources.Load(num.ToString());
+                break;
+        }
 	}
 
     private void OnCollisionEnter(Collision collision)

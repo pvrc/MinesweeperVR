@@ -44,6 +44,8 @@ public class BoardScript : MonoBehaviour {
                 } 
             }
         }
+
+        boardArray[5, 5].GetComponent<TileScript>().Open();
     }
 
     // Update is called once per frame
