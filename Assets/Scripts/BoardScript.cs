@@ -32,8 +32,10 @@ public class BoardScript : MonoBehaviour {
             for (int y = 0; y < height; y++) {
                 Vector3 pos = new Vector3(x * dist, 0, y * dist);
                 if (numberBoardArray[x, y] >= 10) {
-                    boardArray[x, y] = Instantiate(Bomb); 
+                    boardArray[x, y] = Instantiate(Bomb);
                     GameObject.Instantiate(Bomb, pos, Quaternion.identity, transform);
+                    boardArray[x, y].GetComponent<TileScript>().xcor = x;
+                    boardArray[x, y].GetComponent<TileScript>().ycor = y;
 
                 } else {
                     boardArray[x, y] = GameObject.Instantiate(HintNumber, 
@@ -41,6 +43,8 @@ public class BoardScript : MonoBehaviour {
                         Quaternion.identity, 
                         transform);
                     boardArray[x, y].GetComponent<TileScript>().bombCount = numberBoardArray[x, y];
+                    boardArray[x, y].GetComponent<TileScript>().xcor = x;
+                    boardArray[x, y].GetComponent<TileScript>().ycor = y;
                 } 
             }
         }
@@ -79,7 +83,7 @@ public class BoardScript : MonoBehaviour {
             int yy = y + dy[i];
             if (xx >= 0 && xx < width && yy >= 0 && yy < height)
             {
-                neighbours.Add(boardArray[yy, xx]);
+                neighbours.Add(boardArray[xx, yy]);
             }
         }
 

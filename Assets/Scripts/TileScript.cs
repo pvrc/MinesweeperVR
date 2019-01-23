@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class TileScript : MonoBehaviour {
-	public bool mine = false;
-	public bool open = false;
-	public bool marked = false;
-	public int bombCount = 0;
-	public int xcor;
-	public int ycor;
+    public bool mine = false;
+    public bool open = false;
+    public bool marked = false;
+    public int bombCount = 0;
+    public int xcor;
+    public int ycor;
     public BoardScript bs;
-    private string[] textures;
+    private Material[] textures;
+    public Material[] textures2;
     public Renderer mesh;
     
 
     private void Start()
     {
-        textures = new string[10];
+
+        textures = new Material[10];
         for (int i=0; i<10; i++)
         {
-            textures[i] = i.ToString();
+            textures[i] = Resources.Load<Material>(i.ToString());
         }
     }
 
@@ -42,14 +44,16 @@ public class TileScript : MonoBehaviour {
         this.open = true;
         
         int num = bs.numberBoardArray[xcor, ycor];
+        Debug.Log(num + " was opened at " + xcor + ", " + ycor);
         switch (num)
         {
             case 0:
                 bs.OpenNeighbors(xcor, ycor);
-                mesh.materials[0] = (Material)Resources.Load("10");
+                mesh.material = textures2[0];
                 break;
             default:
-                mesh.materials[0] = (Material)Resources.Load(num.ToString());
+                if (num >= 9) num = 10;
+                mesh.material = textures2[num];
                 break;
         }
 	}
