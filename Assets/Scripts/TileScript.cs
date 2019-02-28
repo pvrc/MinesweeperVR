@@ -58,7 +58,7 @@ public class TileScript : MonoBehaviour {
         }
 	}
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         Open();
     }
